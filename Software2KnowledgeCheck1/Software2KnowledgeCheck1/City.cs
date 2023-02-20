@@ -3,18 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+// Using SOLID principles, refactor the City class to follow best practices.
+// The City class should only have properties.
+// You will need to make a new class to contain the logic dealing with construction.
+//
 namespace Software2KnowledgeCheck1
 {
     internal class City
     {
-        public int ZipCode { get; set; }
-        public string Name { get; set; }
-        public string State { get; set; }
-        public int Population { get; set; }
+        private int ZipCode { get; set; }
+        private string Name { get; set; }
+        private string State { get; set; }
+        private int Population { get; set; }
 
-        public List<Building> Buildings { get; } = new List<Building>();
+        private List<Building> Buildings { get; } = new List<Building>();
+        public City()
+        {
+            Random rnd = new Random();
+            int numberOfBuildings = rnd.Next(1, 500);
+            Console.WriteLine("City");
+            for(int i = 0; i< numberOfBuildings; i++)
+            {
+               
+                int NumberOfUnits = rnd.Next(1, 100);
+                int NumberOfLeasedUnits = rnd.Next(1, NumberOfUnits);
+                int NumberOfOpenUnits = NumberOfUnits - NumberOfLeasedUnits;
+                int hasParkingInt = rnd.Next(1, 10) - 1;
+                bool HasParking = Convert.ToBoolean(hasParkingInt);
+                CreateApartment(new Apartment(NumberOfUnits, NumberOfOpenUnits, HasParking));
 
+            }
+        }
         public void CreateApartment(Apartment apartment)
         {
             // Get materials
@@ -27,11 +46,12 @@ namespace Software2KnowledgeCheck1
 
             if (buildingWasMade)
             {
+                Console.WriteLine("Successful Construction!");
                 Buildings.Add(apartment);
             }
         }
 
-        public bool ConstructBuilding<T>(List<string> materials, bool permit, bool zoning) where T: Building
+        public bool ConstructBuilding<T>(List<string> materials, bool permit, bool zoning) where T : Building
         {
             if (permit && zoning)
             {
@@ -55,6 +75,6 @@ namespace Software2KnowledgeCheck1
                 return false;
             }
         }
-        
+
     }
 }
